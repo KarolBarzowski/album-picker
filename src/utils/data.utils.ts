@@ -3503,7 +3503,7 @@ export const albums: IAlbum[] = [
   }
 ]
 
-export const getAlbum = (rank: number) => {
+export const getAlbumById = (rank: number) => {
   return albums.find(album => album.Rank === rank) || null;
 }
 

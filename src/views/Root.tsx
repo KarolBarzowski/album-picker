@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import {Helmet} from "react-helmet";
 import { createTheme } from "../theme";
-import Home from "./Home";
+import Home from "./Home/Home";
 
 const App: React.FC = () => {
   const theme = createTheme();
