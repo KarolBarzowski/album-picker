@@ -5,7 +5,6 @@ import { getAlbumById } from "../../../../utils/data.utils";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
 
-
 const History: React.FC = () => {
   const [albumsListened, setAlbumsListened] = useLocalStorage<number[]>(LocalStorageKeys.AlbumsListened, []);
   const [page, setPage] = useState(0);
@@ -50,7 +49,7 @@ const handleDelete = (id: number) => {
             <List>
               {albumsListenedPage.map((id, index) => {
                 const album = getAlbumById(id);
-                const hasDivider = index < albumsListened.length - 1;
+                const hasDivider = index < albumsListenedPage.length - 1;
 
                 return (
                   <ListItem

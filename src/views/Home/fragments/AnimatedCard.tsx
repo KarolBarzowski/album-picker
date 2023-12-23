@@ -4,19 +4,19 @@ import {motion} from 'framer-motion';
 const AnimatedCard: React.FC<PropsWithChildren> = ({children}) => (
   <motion.div
     initial={{
-      x: -48,
+      y: -24,
       opacity: 0,
     }}
     whileInView={{
-      x: 0,
+      y: 0,
       opacity: 1,
       transition: {
         y: {
-          duration: 0.6,
+          duration: 0.3,
           ease: "easeInOut",
         },
         opacity: {
-          duration: 0.6,
+          duration: 0.3,
           ease: "easeInOut",
         },
       },

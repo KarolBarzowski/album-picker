@@ -4,7 +4,7 @@ import Album from "./fragments/Album/Album";
 import { Container, Grid } from "@mui/material";
 import AnimatedCard from "./fragments/AnimatedCard";
 import History from "./fragments/History/History";
-// import List from "./fragments/List/List";
+import List from "./fragments/List/List";
 import { useLocalStorage } from "usehooks-ts";
 import { HomeTabs, LocalStorageKeys } from "../../enums/enums";
 
@@ -36,11 +36,11 @@ const Home = () => {
             <History />
           </AnimatedCard>
         )}
-        {/* {currentTab === HomeTabs.List && (
+        {currentTab === HomeTabs.List && (
           <AnimatedCard>
             <List />
           </AnimatedCard>
-        )} */}
+        )}
       </Grid>
     </Grid>
   </Container>

@@ -1,7 +1,7 @@
 export enum HomeTabs {
   Album = "Album",
   History = "History",
-  // List = "List",
+  List = "List",
 }
 
 export enum LocalStorageKeys {
