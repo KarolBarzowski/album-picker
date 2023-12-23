@@ -54,13 +54,13 @@ const Album: React.FC = () => {
         />
         <CardContent sx={{display: "flex", flexFlow: "column nowrap", gap: 2}}>
           <Stack gap={1}>
-            <Typography variant="h4">
-              {album.Album}
-            </Typography>
             <Typography
               variant="subtitle1"
               >
               {album.Artist}
+            </Typography>
+            <Typography variant="h4">
+              {album.Album}
             </Typography>
             <Typography
               variant="subtitle2"
