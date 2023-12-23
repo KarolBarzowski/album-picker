@@ -2,6 +2,8 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import {Helmet} from "react-helmet";
 import { createTheme } from "../theme";
 import Home from "./Home/Home";
+import { Provider } from "react-redux";
+import { store } from "../store";
 
 const App: React.FC = () => {
   const theme = createTheme();
@@ -30,10 +32,12 @@ const App: React.FC = () => {
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap"
         />
       </Helmet>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Home />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Home />
+        </ThemeProvider>
+      </Provider>
     </>
   )
 }

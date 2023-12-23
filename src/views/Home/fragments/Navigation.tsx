@@ -16,7 +16,7 @@ const Navigation: React.FC<INavigationProps> = ({
       <CardContent>
         <Stack gap={1} direction="row">
           {Object.values(HomeTabs).map((tab) => (
-            <Button sx={{ width: "100%" }} variant={currentTab === tab ? "contained" : "outlined"} onClick={() => setCurrentTab(tab)}>
+            <Button sx={{ width: "100%" }} variant={currentTab === tab ? "contained" : "outlined"} onClick={() => setCurrentTab(tab)} key={tab}>
               {tab}
             </Button>
           ))}

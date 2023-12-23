@@ -5,10 +5,12 @@ import { getAlbumById } from "../../../../utils/data.utils";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
 
+const rowsPerPageOptions = [5, 10, 25, 50, 100, 500];
+
 const History: React.FC = () => {
   const [albumsListened, setAlbumsListened] = useLocalStorage<number[]>(LocalStorageKeys.AlbumsListened, []);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const albumsListenedPage = useMemo(() => {
     const reversedAlbums = [...albumsListened].reverse();
@@ -81,6 +83,7 @@ const handleDelete = (id: number) => {
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={rowsPerPageOptions}
           />
         </CardContent>
       </Card>

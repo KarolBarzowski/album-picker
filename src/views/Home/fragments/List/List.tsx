@@ -5,10 +5,12 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
 import { albums } from "../../../../utils/data.utils";
 
+const rowsPerPageOptions = [5, 10, 25, 50, 100, 500];
+
 const AlbumList: React.FC = () => {
   const [albumsListened] = useLocalStorage<number[]>(LocalStorageKeys.AlbumsListened, []);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const albumsPage = useMemo(() => {
     const reversedAlbums = [...albums].reverse();
@@ -72,7 +74,7 @@ const AlbumList: React.FC = () => {
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            rowsPerPageOptions={[10, 25, 50, 100, 500]}
+            rowsPerPageOptions={rowsPerPageOptions}
           />
         </CardContent>
       </Card>
