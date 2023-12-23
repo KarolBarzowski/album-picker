@@ -1,14 +1,16 @@
 import { Card, CardHeader, IconButton, List, ListItem, ListItemAvatar, ListItemText, SvgIcon, Typography } from "@mui/material";
 import { useGetAlbumQuery, useGetTracklistQuery } from "../../../../../store/services/musicService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QueueListIcon } from "@heroicons/react/24/outline";
 import { formatMilliseconds } from "../../../../../utils/date.utils";
 import {motion} from 'framer-motion';
 import AlbumCover from "../../../../../components/AlbumCover";
+import { coverArtApi } from "../../../../../store/services/coverArtService";
 
 interface IAlbumTracklistProps {
   artist: string;
   album: string;
+  show?: boolean;
 }
 
 const variants = (i: number) => ({
@@ -27,8 +29,10 @@ const variants = (i: number) => ({
   }
 });
 
-const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album }) => {
-  const [isShown, setIsShown] = useState(false);
+const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album, show = false }) => {
+  const [isShown, setIsShown] = useState(show);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
+  
   const { data: albumData, isLoading: isAlbumLoading } = useGetAlbumQuery({ artist, album });
   const releaseId = albumData?.id;
 
@@ -40,6 +44,18 @@ const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album }) => {
         ...rest,
       }),
   });
+
+  useEffect(() => {
+    setCoverUrl(null);
+    if (!releaseId?.length) return;
+
+    const fetchAlbumCover = async () => {
+        const coverArt = await coverArtApi.downloadCoverArt(releaseId);
+        setCoverUrl(coverArt);
+    };
+
+    fetchAlbumCover();
+  }, [releaseId]);
 
   return (
     <Card sx={{
@@ -82,7 +98,7 @@ const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album }) => {
                   key={track.id}
                 >
                   <ListItemAvatar>
-                    <AlbumCover initialReleaseId={releaseId} />
+                    <AlbumCover coverUrl={coverUrl || null} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={track.title}

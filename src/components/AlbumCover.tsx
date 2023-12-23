@@ -2,32 +2,45 @@ import { useEffect, useState } from "react";
 import { coverArtApi } from "../store/services/coverArtService";
 import { IAlbum } from "album-types";
 import { useGetAlbumQuery } from "../store/services/musicService";
-import { Box, Skeleton } from "@mui/material";
+import { Box, Skeleton, SvgIcon } from "@mui/material";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 interface IAlbumCoverProps {
   album?: IAlbum;
-  initialReleaseId?: string;
+  coverUrl?: string | null;
 }
 
-const AlbumCover: React.FC<IAlbumCoverProps> = ({ album, initialReleaseId }) => {
-  const [coverUrl, setCoverUrl] = useState<string | null>(null);
+const AlbumCover: React.FC<IAlbumCoverProps> = ({ album, coverUrl: initialCoverUrl }) => {
+  console.log(album, initialCoverUrl)
+  const [coverUrl, setCoverUrl] = useState<string | null>(initialCoverUrl || null);
+  const [isError, setIsError] = useState(false);
 
-  const { data: albumData } = useGetAlbumQuery({ artist: album?.Artist || "", album: album?.Album.toString() || "" }, {
-    skip: !!initialReleaseId || !album,
+  const { data: albumData, isError: isAlbumError } = useGetAlbumQuery({ artist: album?.Artist || "", album: album?.Album.toString() || "" }, {
+    skip: !!initialCoverUrl || !album,
   });
-  const releaseId = initialReleaseId || albumData?.id;
+  const releaseId = albumData?.id;
 
   useEffect(() => {
+    if (initialCoverUrl) {
+      setCoverUrl(initialCoverUrl);
+      setIsError(false);
+      return;
+    }
+
     setCoverUrl(null);
-    if (!releaseId?.length) return;
+    setIsError(false);
+    if (!releaseId?.length || isAlbumError) return;
 
     const fetchAlbumCover = async () => {
-        const coverArt = await coverArtApi.downloadCoverArt(releaseId);
-        setCoverUrl(coverArt);
+      const coverArt = await coverArtApi.downloadCoverArt(releaseId);
+      
+      if (!coverArt) setIsError(true);
+
+      setCoverUrl(coverArt);
     };
 
     fetchAlbumCover();
-  }, [releaseId]);
+  }, [releaseId, initialCoverUrl, isAlbumError]);
 
   return (
     coverUrl ? (
@@ -49,14 +62,32 @@ const AlbumCover: React.FC<IAlbumCoverProps> = ({ album, initialReleaseId }) => 
         />
       </Box>
     ) : (
-      <Skeleton
-        variant="rectangular"
-        height={48}
-        width={48}
-        sx={{
-          borderRadius: 1,
-        }}
-      />
+      (isError || isAlbumError) ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 1,
+            height: 48,
+            width: 48,
+            backgroundColor: "neutral.100"
+          }}
+        >
+        <SvgIcon color="disabled">
+          <QuestionMarkCircleIcon />
+        </SvgIcon>
+      </Box>
+      ) : (
+        <Skeleton
+          variant="rectangular"
+          height={48}
+          width={48}
+          sx={{
+            borderRadius: 1,
+          }}
+        />
+      )
     )
   );
 };

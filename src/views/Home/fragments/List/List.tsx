@@ -1,10 +1,12 @@
-import { Card, CardContent, CardHeader, List, ListItem, ListItemAvatar, ListItemText, SvgIcon, TablePagination } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, SvgIcon, TablePagination } from "@mui/material";
 import { useLocalStorage } from "usehooks-ts";
 import { LocalStorageKeys } from "../../../../enums/enums";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, QueueListIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
 import { albums } from "../../../../utils/data.utils";
 import AlbumCover from "../../../../components/AlbumCover";
+import { IAlbum } from "album-types";
+import AlbumTracklist from "../Album/fragments/Tracklist";
 
 const rowsPerPageOptions = [5, 10, 25, 50, 100, 500];
 
@@ -12,6 +14,7 @@ const AlbumList: React.FC = () => {
   const [albumsListened] = useLocalStorage<number[]>(LocalStorageKeys.AlbumsListened, []);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+  const [showAlbum, setShowAlbum] = useState<IAlbum | null>(null);
 
   const albumsPage = useMemo(() => {
     const reversedAlbums = [...albums].reverse();
@@ -40,8 +43,11 @@ const AlbumList: React.FC = () => {
 
 
   return (
-    <>
-      <Card raised>
+    <Box sx={{ position: "relative" }}>
+      {showAlbum && (
+        <AlbumTracklist album={showAlbum?.Album.toString()} artist={showAlbum?.Artist} show />
+      )}
+      <Card sx={{ position: "relative", zIndex: 1 }} raised>
         <CardHeader title="List" subheader="Top 500 albums" />
         <CardContent>
           <List>
@@ -64,11 +70,20 @@ const AlbumList: React.FC = () => {
                     secondary={`${album?.Artist}, ${album?.Info}`}
                     secondaryTypographyProps={{ variant: 'body2' }}
                   />
-                  {albumsListened.includes(album.Rank) && (
-                    <SvgIcon color="success">
-                      <CheckCircleIcon />
-                    </SvgIcon>
-                  )}
+                  <Stack direction="row" alignItems="center" gap={2}>
+                    {showAlbum?.Rank !== album.Rank && (
+                      <IconButton edge="end" onClick={() => setShowAlbum(album)}>
+                        <SvgIcon>
+                          <QueueListIcon />
+                        </SvgIcon>
+                      </IconButton>
+                      )}
+                    {albumsListened.includes(album.Rank) && (
+                      <SvgIcon color="success">
+                        <CheckCircleIcon />
+                      </SvgIcon>
+                    )}
+                  </Stack>
                 </ListItem>
               );
             })}
@@ -84,7 +99,7 @@ const AlbumList: React.FC = () => {
           />
         </CardContent>
       </Card>
-    </>
+    </Box>
   );
 }
 

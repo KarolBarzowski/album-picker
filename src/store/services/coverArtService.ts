@@ -4,7 +4,7 @@ import {Buffer} from 'buffer';
 export const coverArtApi = {
   downloadCoverArt: async (albumId: string): Promise<string | null> => {
     try {
-      const coverArtUrl = `https://coverartarchive.org/release/${albumId}/front`;
+      const coverArtUrl = `https://coverartarchive.org/release/${albumId}/front-250`;
       const response: AxiosResponse = await axios.get(coverArtUrl, { responseType: 'arraybuffer' });
 
       if (response.status === 200) {
