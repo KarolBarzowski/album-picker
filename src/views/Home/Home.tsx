@@ -1,5 +1,5 @@
 
-import Sidebar from "./fragments/Sidebar";
+import Navigation from "./fragments/Navigation";
 import Album from "./fragments/Album/Album";
 import { Container, Grid } from "@mui/material";
 import AnimatedCard from "./fragments/AnimatedCard";
@@ -17,16 +17,15 @@ const Home = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  }}>
-    <Grid container>
-      <Grid item xs={3} my="auto">
-        <Sidebar {...{
+  }} maxWidth="sm">
+    <Grid container direction="column" gap={3}>
+      <Grid item>
+        <Navigation {...{
           currentTab,
           setCurrentTab,
         }} />
       </Grid>
-      <Grid item xs={1} />
-      <Grid item xs={6}>
+      <Grid item>
         {currentTab === HomeTabs.Album && (
           <AnimatedCard>
             <Album />

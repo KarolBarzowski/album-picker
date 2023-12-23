@@ -1,23 +1,22 @@
-import { Button, Card, CardContent, CardHeader, Stack } from "@mui/material";
+import { Button, Card, CardContent, Stack } from "@mui/material";
 import { HomeTabs } from "../../../enums/enums";
 
-interface ISidebarProps {
+interface INavigationProps {
   currentTab: HomeTabs;
   setCurrentTab: (tab: HomeTabs) => void;
 }
 
-const Sidebar: React.FC<ISidebarProps> = ({
+const Navigation: React.FC<INavigationProps> = ({
   currentTab,
   setCurrentTab,
 }) => {
   
   return (
     <Card>
-      <CardHeader title="Menu" />
       <CardContent>
-        <Stack gap={1}>
+        <Stack gap={1} direction="row">
           {Object.values(HomeTabs).map((tab) => (
-            <Button variant={currentTab === tab ? "contained" : "outlined"} onClick={() => setCurrentTab(tab)}>
+            <Button sx={{ width: "100%" }} variant={currentTab === tab ? "contained" : "outlined"} onClick={() => setCurrentTab(tab)}>
               {tab}
             </Button>
           ))}
@@ -27,4 +26,4 @@ const Sidebar: React.FC<ISidebarProps> = ({
   )
 }
 
-export default Sidebar;
+export default Navigation;
