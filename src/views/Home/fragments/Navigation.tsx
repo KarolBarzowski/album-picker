@@ -12,7 +12,7 @@ const Navigation: React.FC<INavigationProps> = ({
 }) => {
   
   return (
-    <Card>
+    <Card raised>
       <CardContent>
         <Stack gap={1} direction="row">
           {Object.values(HomeTabs).map((tab) => (

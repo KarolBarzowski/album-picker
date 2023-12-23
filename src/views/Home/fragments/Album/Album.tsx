@@ -6,6 +6,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { getAlbumById, getRandomAlbum } from "../../../../utils/data.utils";
 import { LocalStorageKeys } from "../../../../enums/enums";
 import AlbumTracklist from "./fragments/Tracklist";
+import AlbumCover from "../../../../components/AlbumCover";
 
 const Album: React.FC = () => {
   const [lastAlbum, setLastAlbum] = useLocalStorage<number>(LocalStorageKeys.LastAlbum, 0);
@@ -29,8 +30,11 @@ const Album: React.FC = () => {
 
   return (
     <Box sx={{ position: "relative" }}>
-      <Card sx={{ position: "relative", zIndex: 1 }}>
+      <Card sx={{ position: "relative", zIndex: 1 }} raised>
         <CardHeader
+          avatar={
+            <AlbumCover album={album} />
+          }
           action={(
             <Button
               color="inherit"
@@ -45,14 +49,11 @@ const Album: React.FC = () => {
               Refresh
             </Button>
           )}
-          title="Album"
+          title={`Nº ${album.Rank}`}
           subheader={`You've listened ${albumsListened.length} of 500 albums`}
         />
         <CardContent sx={{display: "flex", flexFlow: "column nowrap", gap: 2}}>
           <Stack gap={1}>
-          <Typography variant="subtitle1">
-              Nº {album.Rank}
-            </Typography>
             <Typography variant="h4">
               {album.Album}
             </Typography>

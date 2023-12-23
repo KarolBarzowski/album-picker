@@ -1,9 +1,10 @@
-import { Card, CardHeader, IconButton, List, ListItem, ListItemText, SvgIcon, Typography } from "@mui/material";
+import { Card, CardHeader, IconButton, List, ListItem, ListItemAvatar, ListItemText, SvgIcon, Typography } from "@mui/material";
 import { useGetAlbumQuery, useGetTracklistQuery } from "../../../../../store/services/musicService";
 import { useState } from "react";
 import { QueueListIcon } from "@heroicons/react/24/outline";
 import { formatMilliseconds } from "../../../../../utils/date.utils";
 import {motion} from 'framer-motion';
+import AlbumCover from "../../../../../components/AlbumCover";
 
 interface IAlbumTracklistProps {
   artist: string;
@@ -31,10 +32,11 @@ const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album }) => {
   const { data: albumData, isLoading: isAlbumLoading } = useGetAlbumQuery({ artist, album });
   const releaseId = albumData?.id;
 
-  const { tracklistData, isLoading: isTracklistLoading } = useGetTracklistQuery(releaseId || '', {
+  const { tracklistData, totalLength, isLoading: isTracklistLoading } = useGetTracklistQuery(releaseId || '', {
       skip: !releaseId,
       selectFromResult: ({ data, ...rest }) => ({
         tracklistData: data || [],
+        totalLength: data ? data.reduce((prev, curr) => (prev + parseInt(curr.length)), 0) : 0,
         ...rest,
       }),
   });
@@ -49,8 +51,9 @@ const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album }) => {
         maxHeight: "calc(100% - 48px)",
         height: "calc(100% - 48px)",
       }}
+      raised
     >
-      <CardHeader title="Tracklist" action={
+      <CardHeader title="Tracklist" subheader={`${tracklistData.length} songs, ${formatMilliseconds(totalLength)}`} action={
         <IconButton
           onClick={() => setIsShown(!isShown)}
           sx={{ marginLeft: 12 }}
@@ -75,10 +78,12 @@ const AlbumTracklist: React.FC<IAlbumTracklistProps> = ({ artist, album }) => {
                 initial="hide"
               >
                 <ListItem
-                  role="div"
                   divider={hasDivider}
                   key={track.id}
-                  >
+                >
+                  <ListItemAvatar>
+                    <AlbumCover initialReleaseId={releaseId} />
+                  </ListItemAvatar>
                   <ListItemText
                     primary={track.title}
                     primaryTypographyProps={{ variant: 'subtitle1' }}

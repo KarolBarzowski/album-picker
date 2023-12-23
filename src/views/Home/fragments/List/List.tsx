@@ -1,9 +1,10 @@
-import { Card, CardContent, CardHeader, List, ListItem, ListItemText, SvgIcon, TablePagination } from "@mui/material";
+import { Card, CardContent, CardHeader, List, ListItem, ListItemAvatar, ListItemText, SvgIcon, TablePagination } from "@mui/material";
 import { useLocalStorage } from "usehooks-ts";
 import { LocalStorageKeys } from "../../../../enums/enums";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
 import { albums } from "../../../../utils/data.utils";
+import AlbumCover from "../../../../components/AlbumCover";
 
 const rowsPerPageOptions = [5, 10, 25, 50, 100, 500];
 
@@ -40,7 +41,7 @@ const AlbumList: React.FC = () => {
 
   return (
     <>
-      <Card>
+      <Card raised>
         <CardHeader title="List" subheader="Top 500 albums" />
         <CardContent>
           <List>
@@ -52,6 +53,11 @@ const AlbumList: React.FC = () => {
                   divider={hasDivider}
                   key={album.Rank}
                 >
+                  <ListItemAvatar>
+                      {album && (
+                        <AlbumCover album={album} />
+                      )}
+                    </ListItemAvatar>
                   <ListItemText
                     primary={`Nº ${album?.Rank} - ${album?.Album}`}
                     primaryTypographyProps={{ variant: 'subtitle1' }}

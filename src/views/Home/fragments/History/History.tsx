@@ -1,9 +1,10 @@
-import { Card, CardContent, CardHeader, IconButton, List, ListItem, ListItemText, SvgIcon, TablePagination, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader, IconButton, List, ListItem, ListItemAvatar, ListItemText, SvgIcon, TablePagination, Typography } from "@mui/material";
 import { useLocalStorage } from "usehooks-ts";
 import { LocalStorageKeys } from "../../../../enums/enums";
 import { getAlbumById } from "../../../../utils/data.utils";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
+import AlbumCover from "../../../../components/AlbumCover";
 
 const rowsPerPageOptions = [5, 10, 25, 50, 100, 500];
 
@@ -44,7 +45,7 @@ const handleDelete = (id: number) => {
 
   return (
     <>
-      <Card>
+      <Card raised>
         <CardHeader title="History" subheader="Your already listened albums" />
         <CardContent>
           {albumsListened.length ? (
@@ -58,6 +59,11 @@ const handleDelete = (id: number) => {
                     divider={hasDivider}
                     key={id}
                   >
+                    <ListItemAvatar>
+                      {album && (
+                        <AlbumCover album={album} />
+                      )}
+                    </ListItemAvatar>
                     <ListItemText
                       primary={`Nº ${album?.Rank} - ${album?.Album}`}
                       primaryTypographyProps={{ variant: 'subtitle1' }}

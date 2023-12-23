@@ -3504,7 +3504,7 @@ export const albums: IAlbum[] = [
 ]
 
 export const getAlbumById = (rank: number) => {
-  return albums.find(album => album.Rank === rank) || null;
+  return albums.find(album => album.Rank === rank);
 }
 
 export const getRandomAlbum = (albumsListened: number[]) => {
