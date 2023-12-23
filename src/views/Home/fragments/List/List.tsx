@@ -72,6 +72,7 @@ const AlbumList: React.FC = () => {
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[10, 25, 50, 100, 500]}
           />
         </CardContent>
       </Card>
